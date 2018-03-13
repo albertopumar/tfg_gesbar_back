@@ -25,12 +25,8 @@ app.get('/api/userInfo',
 );
 
 // Routes
-app.get('/apiV1//userInfo',
-    passport.authenticate('bearer', { session: false }),
-    function(req, res) {
-        res.json({ user_id: req.user.userId, name: req.user.username, scope: req.authInfo.scope })
-    }
-);
+var ownerController = require("./controllers/ownerController");
+app.use('/api/V1/owner', passport.authenticate('bearer', { session: false }), ownerController);
 
 
 // Port listening
