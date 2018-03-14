@@ -1,31 +1,46 @@
-var mongoose = require("mongoose");
-// mongoose.set('debug', true);
-
 var Establishment = require("../data/establishment");
-var User = require("../data/user");
 var _ = require("underscore");
 
-var router = require("express").Router();
-router.route("/establishment/:id?").get(getEstablishments).post(addEstablishments);
 
-// TODO: List establishments
-// TODO: Get one stablishment by id
+
+var router = require("express").Router();
+router.route("/establishment/:id?").get(getEstablishments).post(addEstablishments).put(editEstablishments).delete(removeEstablishments);
+
+
+
+/**
+ *
+ * @param req
+ * @param res
+ *
+ * Return the list of establishments or only one if id is specified
+ */
+
 function getEstablishments(req, res) {
-    // req.params.id
-    // req.user
     if(req.params.id) {
-        Establishment.find(function (err, establishment) {
+        Establishment.find({_id: req.params.id}, function (err, establishment) {
             if (err)
                 res.send(err);
             else
                 res.json(establishment);
         });
     } else {
-        res.json(req.user.establishment);
+        Establishment.find({_id: { $in : req.user.establishments }}, function(err, establishments) {
+            if (err)
+                res.send(err);
+            else
+                res.json(establishments);
+        });
     }
 }
 
-// TODO: Add establishment
+/**
+ *
+ * @param req
+ * @param res
+ *
+ * Add a establishment associated with his owner. The owner will be the logged user
+ */
 function addEstablishments(req, res) {
     var establishment = new Establishment(_.extend({"owner": req.user._id}, req.body));
     establishment.save(function (err) {
@@ -41,14 +56,41 @@ function addEstablishments(req, res) {
 
         }
     });
-
-
 }
 
-// TODO: Edit establishment by id
+/**
+ *
+ * @param req
+ * @param res
+ *
+ * Edit the establishment info passed thought JSON
+ */
+function editEstablishments(req, res) {
+    if (!req.params.id)
+        res.status(400).send({ error: 'You must specify an id' });
+    else
+        Establishment.findOneAndUpdate({_id: req.params.id}, req.body, function (err, updated_establishment) {
+            if (err) res.send(err);
+            else res.json(updated_establishment);
+        });
+}
 
-
-// TODO: Delete establishment by id
+/**
+ *
+ * @param req
+ * @param res
+ *
+ * Remove the establishment selected by id
+ */
+function removeEstablishments(req, res) {
+    if (!req.params.id)
+        res.status(400).send({ error: 'You must specify an id' });
+    else
+        Establishment.findOneAndRemove({_id: req.params.id}, function (err, removed) {
+            if (err) res.send(err);
+            else res.json(removed);
+        });
+}
 
 
 module.exports = router;
