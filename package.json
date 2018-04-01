@@ -4,7 +4,10 @@
   "description": "this is a demo application made with react, express, mongodb and nodejs,",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
   },
   "author": "nishant",
   "license": "ISC",
@@ -12,6 +15,7 @@
     "Faker": "^0.7.2",
     "body-parser": "^1.14.2",
     "browserify": "^12.0.1",
+    "cors": "^2.8.4",
     "es6-promise": "^3.0.2",
     "express": "^4.13.3",
     "guid": "0.0.12",
@@ -23,8 +27,9 @@
     "passport-http": "^0.3.0",
     "passport-http-bearer": "^1.0.1",
     "passport-oauth2-client-password": "^0.1.2",
-    "react": "^0.14.3",
-    "react-dom": "^0.14.3",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-scripts": "1.1.1",
     "reactify": "^1.1.1",
     "underscore": "^1.8.3",
     "vinyl-source-stream": "^1.1.0"

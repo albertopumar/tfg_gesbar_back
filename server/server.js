@@ -3,12 +3,13 @@ var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
 var path = require("path");
 var passport = require('passport');
+var cors = require('cors');
 
 //Express request pipeline
 var app = express();
 app.use(express.static(path.join(__dirname, "../app/dist")));
 app.use(bodyParser.json());
-
+app.use(cors());
 
 // Passport
 app.use(passport.initialize());
@@ -18,15 +19,21 @@ var oauth2 = require('./auth/oauth2');
 app.post('/oauth/token', oauth2.token);
 
 app.get('/api/userInfo',
-    passport.authenticate('bearer', { session: false }),
+    passport.authenticate('owner', { session: false }),
     function(req, res) {
         res.json({ user_id: req.user.userId, name: req.user.username, scope: req.authInfo.scope })
     }
 );
 
 // Routes
-var ownerController = require("./controllers/ownerController");
-app.use('/api/V1/owner', passport.authenticate('bearer', { session: false }), ownerController);
+const ownerController = require("./controllers/ownerController");
+app.use('/api/V1/owner', passport.authenticate('owner', { session: false }), ownerController);
+
+const establishmentEvent = require("./controllers/establishmentEvent");
+app.use('/api/V1/events', passport.authenticate('owner', { session: false }), establishmentEvent);
+
+const menuController = require("./controllers/menuController");
+app.use('/api/V1/', menuController);
 
 
 // Port listening

@@ -6,8 +6,6 @@ var _ = require("underscore");
 var router = require("express").Router();
 router.route("/establishment/:id?").get(getEstablishments).post(addEstablishments).put(editEstablishments).delete(removeEstablishments);
 
-
-
 /**
  *
  * @param req
@@ -46,11 +44,10 @@ function addEstablishments(req, res) {
     establishment.save(function (err) {
         if (err) res.send(err);
         else {
-            req.user.username = 'test';
             req.user.establishments.push(establishment._id);
             req.user.save(function (err) {
                 if (err) res.send(err);
-                else res.json(req.user);
+                else res.json(establishment);
 
             });
 
@@ -91,6 +88,5 @@ function removeEstablishments(req, res) {
             else res.json(removed);
         });
 }
-
 
 module.exports = router;

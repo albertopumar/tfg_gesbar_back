@@ -35,7 +35,7 @@ passport.use(new ClientPasswordStrategy(
     }
 ));
 
-passport.use(new BearerStrategy(
+passport.use('owner', new BearerStrategy(
     function(accessToken, done) {
         AccessTokenModel.findOne({ token: accessToken }, function(err, token) {
             if (err) { return done(err); }
@@ -48,11 +48,11 @@ passport.use(new BearerStrategy(
                 return done(null, false, { message: 'Token expired' });
             }
 
-            UserModel.findById(token.userId, function(err, user) {
+            UserModel.findOne({_id: token.userId, type: 'owner'}, function(err, user) {
                 if (err) { return done(err); }
                 if (!user) { return done(null, false, { message: 'Unknown user' }); }
 
-                var info = { scope: '*' };
+                var info = { scope: 'owner' };
                 done(null, user, info);
             });
         });
