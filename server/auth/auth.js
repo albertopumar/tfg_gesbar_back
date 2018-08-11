@@ -58,3 +58,28 @@ passport.use('owner', new BearerStrategy(
         });
     }
 ));
+
+// TODO: create user strategy
+passport.use('user', new BearerStrategy(
+    function(accessToken, done) {
+        AccessTokenModel.findOne({ token: accessToken }, function(err, token) {
+            if (err) { return done(err); }
+            if (!token) { return done(null, false); }
+
+            if( Math.round((Date.now()-token.created)/1000) > 3600 ) {
+                AccessTokenModel.remove({ token: accessToken }, function (err) {
+                    if (err) return done(err);
+                });
+                return done(null, false, { message: 'Token expired' });
+            }
+
+            UserModel.findOne({_id: token.userId, type: 'owner'}, function(err, user) {
+                if (err) { return done(err); }
+                if (!user) { return done(null, false, { message: 'Unknown user' }); }
+
+                var info = { scope: 'owner' };
+                done(null, user, info);
+            });
+        });
+    }
+));

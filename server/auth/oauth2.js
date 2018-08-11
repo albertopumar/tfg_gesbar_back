@@ -32,7 +32,10 @@ server.exchange(oauth2orize.exchange.password(function(client, username, passwor
         });
         token.save(function (err) {
             if (err) { return done(err); }
-            done(null, tokenValue, refreshTokenValue, { 'expires_in': 3600 });
+            console.log(user);
+            console.log(user.username)
+            console.log(user.type)
+            done(null, tokenValue, refreshTokenValue, { 'expires_in': 3600, type: user.type});
         });
     });
 }));
@@ -64,13 +67,13 @@ server.exchange(oauth2orize.exchange.refreshToken(function(client, refreshToken,
             });
             token.save(function (err, token) {
                 if (err) { return done(err); }
-                done(null, tokenValue, refreshTokenValue, { 'expires_in': 3600 });
+                done(null, tokenValue, refreshTokenValue, { 'expires_in': 3600, type: user.type});
             });
         });
     });
 }));
 
-// token endpoint
+// Token endpoint
 exports.token = [
     passport.authenticate(['basic', 'oauth2-client-password'], { session: false }),
     server.token(),

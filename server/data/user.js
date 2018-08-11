@@ -7,6 +7,10 @@ var User = mongoose.Schema({
             unique: true,
             required: true
         },
+        type: {
+            type: String,
+            required: true
+        },
         hashedPassword: {
             type: String,
             required: true

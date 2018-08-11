@@ -7,7 +7,6 @@ var cors = require('cors');
 
 //Express request pipeline
 var app = express();
-app.use(express.static(path.join(__dirname, "../app/dist")));
 app.use(bodyParser.json());
 app.use(cors());
 
@@ -29,11 +28,17 @@ app.get('/api/userInfo',
 const ownerController = require("./controllers/ownerController");
 app.use('/api/V1/owner', passport.authenticate('owner', { session: false }), ownerController);
 
+const menuController = require("./controllers/menuController");
+app.use('/api/V1/owner', passport.authenticate('owner', { session: false }), menuController);
+
+const productController = require("./controllers/productController");
+app.use('/api/V1/owner', passport.authenticate('owner', { session: false }), productController);
+
+const orderController = require("./controllers/orderController");
+app.use('/api/V1/', passport.authenticate('user', { session: false }), orderController);
+
 const establishmentEvent = require("./controllers/establishmentEvent");
 app.use('/api/V1/events', passport.authenticate('owner', { session: false }), establishmentEvent);
-
-const menuController = require("./controllers/menuController");
-app.use('/api/V1/', menuController);
 
 
 // Port listening
