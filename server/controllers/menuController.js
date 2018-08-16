@@ -6,6 +6,7 @@ var _ = require("underscore");
 
 var router = require("express").Router();
 router.route("/establishment/:establishment_id/menu/:menu_id?").get(getMenus).post(addMenu).put(editMenu).delete(removeMenu);
+router.route("/establishment/:establishment_id/activeMenu/:menu_id").get(updateActiveMenu);
 
 // TODO: add route? -> Menus associated with user
 
@@ -65,6 +66,20 @@ function removeMenu(req, res) {
                 res.json(removed);
         });
     }
+}
+
+
+function updateActiveMenu(req, res) {
+    Menu.update({establishment: req.params.establishment_id}, {availability: false}, {multi: true}, function (err, menus) {
+        if (err) res.send(err);
+        else {
+            Menu.findByIdAndUpdate(req.params.menu_id, {availability: true}, function (err, menu) {
+                if (err) res.send(err);
+                else
+                    res.json(menu);
+            });
+        }
+    });
 }
 
 

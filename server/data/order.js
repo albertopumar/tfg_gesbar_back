@@ -10,6 +10,10 @@ var Order = mongoose.Schema({
     notes: {
         type: String
     },
+    status: {
+        type: String,
+        default: 'pending'
+    },
     products: [
         {
             quantity: {
@@ -22,6 +26,12 @@ var Order = mongoose.Schema({
             product: {
                 type: mongoose.Schema.Types.ObjectId, ref: 'product',
                 required: true
+            },
+            name: {
+                type: String
+            },
+            options: {
+                type: Object
             }
         }
     ],
@@ -34,6 +44,7 @@ Order.pre('save', function (next) {
         Product.findOne({_id: productItem.product}, function (err, product) {
                 productItem.price = product.price;
                 productItem.menu = product.menu;
+                productItem.name = product.name;
                 next(err, productItem);
         });
     }, function (err, result) {

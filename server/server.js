@@ -34,11 +34,18 @@ app.use('/api/V1/owner', passport.authenticate('owner', { session: false }), men
 const productController = require("./controllers/productController");
 app.use('/api/V1/owner', passport.authenticate('owner', { session: false }), productController);
 
-const orderController = require("./controllers/orderController");
-app.use('/api/V1/', passport.authenticate('user', { session: false }), orderController);
 
 const establishmentEvent = require("./controllers/establishmentEvent");
 app.use('/api/V1/events', passport.authenticate('owner', { session: false }), establishmentEvent);
+
+
+
+
+const orderController = require("./controllers/orderController");
+app.use('/api/V1/', passport.authenticate('user', { session: false }), orderController);
+
+const establishmentController = require("./controllers/establishmentController");
+app.use('/api/V1/', passport.authenticate('user', { session: false }), establishmentController);
 
 
 // Port listening

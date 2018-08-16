@@ -32,9 +32,6 @@ server.exchange(oauth2orize.exchange.password(function(client, username, passwor
         });
         token.save(function (err) {
             if (err) { return done(err); }
-            console.log(user);
-            console.log(user.username)
-            console.log(user.type)
             done(null, tokenValue, refreshTokenValue, { 'expires_in': 3600, type: user.type});
         });
     });

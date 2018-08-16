@@ -9,8 +9,6 @@ var RefreshTokenModel       = require('../data/refreshToken');
 
 passport.use(new BasicStrategy(
     function(username, password, done) {
-        console.log('basic strategy');
-        console.log(username);
         ClientModel.findOne({ clientId: username }, function(err, client) {
             if (err) { return done(err); }
             if (!client) { return done(null, false); }
@@ -23,8 +21,6 @@ passport.use(new BasicStrategy(
 
 passport.use(new ClientPasswordStrategy(
     function(clientId, clientSecret, done) {
-        console.log('client password strategy');
-        console.log(clientId);
         ClientModel.findOne({ clientId: clientId }, function(err, client) {
             if (err) { return done(err); }
             if (!client) { return done(null, false); }
@@ -73,11 +69,11 @@ passport.use('user', new BearerStrategy(
                 return done(null, false, { message: 'Token expired' });
             }
 
-            UserModel.findOne({_id: token.userId, type: 'owner'}, function(err, user) {
+            UserModel.findOne({_id: token.userId, type: 'client'}, function(err, user) {
                 if (err) { return done(err); }
                 if (!user) { return done(null, false, { message: 'Unknown user' }); }
 
-                var info = { scope: 'owner' };
+                var info = { scope: 'client' };
                 done(null, user, info);
             });
         });
