@@ -16,7 +16,7 @@ function eventsEstablishments(req, res) {
             let requests = establishments.reduce((promiseChain, establishment) => {
                 return promiseChain.then(() => new Promise((resolve) => {
 
-                    Order.find({establishment: establishment._id}, function (err, orders) {
+                    Order.find({establishment: establishment._id, status: 'pending'}, function (err, orders) {
                         if (!err) {
                             establishmentOrders[establishment._id] = orders.length;
                             resolve();

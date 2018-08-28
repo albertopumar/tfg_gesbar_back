@@ -5,7 +5,7 @@ var Product = require("../data/product");
 var _ = require("underscore");
 
 var router = require("express").Router();
-router.route("/establishment/:establishment_id/menu/:menu_id/items/:item_id?").get(getMenuItems).post(addMenuItems);
+router.route("/establishment/:establishment_id/menu/:menu_id/items/:item_id?").get(getMenuItems).post(addMenuItems).put(editMenuItem);
 
 function getMenuItems(req, res) {
     if (!req.params.menu_id) {
@@ -36,5 +36,14 @@ function addMenuItems(req, res) {
     });
 }
 
+function editMenuItem(req, res) {
+    if (!req.params.item_id)
+        res.status(400).send({ error: 'You must specify an id' });
+    else
+        Product.findOneAndUpdate({_id: req.params.item_id}, req.body, function (err, updated_product) {
+            if (err) res.send(err);
+            else res.json(updated_product);
+        });
+}
 
 module.exports = router;

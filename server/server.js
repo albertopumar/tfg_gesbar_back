@@ -17,6 +17,9 @@ require('./auth/auth');
 var oauth2 = require('./auth/oauth2');
 app.post('/oauth/token', oauth2.token);
 
+var register = require('./controllers/registerController');
+app.use('/register', register);
+
 app.get('/api/userInfo',
     passport.authenticate('owner', { session: false }),
     function(req, res) {
@@ -42,7 +45,7 @@ app.use('/api/V1/events', passport.authenticate('owner', { session: false }), es
 
 
 const orderController = require("./controllers/orderController");
-app.use('/api/V1/', passport.authenticate('user', { session: false }), orderController);
+app.use('/api/V1/', passport.authenticate(['user', 'owner'], { session: false }), orderController);
 
 const establishmentController = require("./controllers/establishmentController");
 app.use('/api/V1/', passport.authenticate('user', { session: false }), establishmentController);

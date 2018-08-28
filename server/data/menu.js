@@ -5,6 +5,9 @@ var Menu = mongoose.Schema({
         type: String,
         required: true
     },
+    description: {
+        type: String
+    },
     products: [{type: mongoose.Schema.Types.ObjectId, ref: 'product'}],
     establishment: { type: mongoose.Schema.Types.ObjectId, ref: 'establishment' },
     availability: {

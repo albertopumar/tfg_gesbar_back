@@ -8,15 +8,29 @@ var _ = require("underscore");
 var router = require("express").Router();
 router.route("/orders/").get(getOrders).post(addOrder);
 router.route("/submitOrder/:establishment_id").get(getMenus);
+router.route("/order/:order_id/update").get(updateOrder);
 
 
 function getOrders(req, res) {
     // TODO: Check is the owner is the authorized user
-
-    Order.find({user: req.user._id}, function (err, order) {
-        if (err) res.send(err);
-        else res.json(order);
-    });
+    if(req.user.type === 'owner') {
+        Order.find({establishment: {$in: req.user.establishments}, status: req.query.status}, function (err, order) {
+            if (err) res.send(err);
+            else res.json(order);
+        });
+    }else {
+        if (req.query.status) {
+            Order.find({user: req.user._id, status: req.query.status}, function (err, order) {
+                if (err) res.send(err);
+                else res.json(order);
+            });
+        } else {
+            Order.find({user: req.user._id, status: {$ne: 'pending'}}, function (err, order) {
+                if (err) res.send(err);
+                else res.json(order);
+            });
+        }
+    }
 }
 
 function addOrder(req, res) {
@@ -51,7 +65,20 @@ function getMenus(req, res) {
             }
         });
     } else {
-        res.status(400).send({ error: 'You must specify an id' });
+        res.status(400).send({error: 'You must specify an id'});
+    }
+}
+
+function updateOrder(req, res) {
+    if(req.user.type === 'owner') {
+        Order.update({_id: req.params.order_id}, {status: req.query.status}, function (err, order) {
+            if (err)
+                res.send(err);
+            else
+                res.json(order);
+        });
+    } else {
+        res.status(400).send({error: 'You must specify an id'});
     }
 }
 

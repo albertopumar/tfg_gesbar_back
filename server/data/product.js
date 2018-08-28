@@ -15,7 +15,7 @@ var Product = mongoose.Schema({
     },
     availability: {
         type: Boolean,
-        required: true
+        default: true
     },
     options: {
         type: Object
