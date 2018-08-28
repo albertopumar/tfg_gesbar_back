@@ -47,7 +47,7 @@ function addMenu(req, res) {
 function editMenu(req, res) {
     // TODO: Check is the owner is the authorized user
     if (!req.params.menu_id)
-        res.status(400).send({error: 'You must specify an id'});
+        res.status(400).send({message: 'You must specify an id'});
     else
         Menu.findOneAndUpdate({_id: req.params.menu_id}, req.body, function (err, updated_menu) {
             if (err) res.send(err);
@@ -58,7 +58,7 @@ function editMenu(req, res) {
 function removeMenu(req, res) {
     // TODO: Check is the owner is the authorized user
     if (!req.params.menu_id)
-        res.status(400).send({error: 'You must specify an id'});
+        res.status(400).send({message: 'You must specify an id'});
     else {
         Menu.findOneAndRemove({_id: req.params.menu_id}, function (err, removed) {
             if (err) res.send(err);

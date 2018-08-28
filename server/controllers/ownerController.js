@@ -64,7 +64,7 @@ function addEstablishments(req, res) {
  */
 function editEstablishments(req, res) {
     if (!req.params.id)
-        res.status(400).send({ error: 'You must specify an id' });
+        res.status(400).send({ message: 'You must specify an id' });
     else
         Establishment.findOneAndUpdate({_id: req.params.id}, req.body, function (err, updated_establishment) {
             if (err) res.send(err);
@@ -81,7 +81,7 @@ function editEstablishments(req, res) {
  */
 function removeEstablishments(req, res) {
     if (!req.params.id)
-        res.status(400).send({ error: 'You must specify an id' });
+        res.status(400).send({ message: 'You must specify an id' });
     else
         Establishment.findOneAndRemove({_id: req.params.id}, function (err, removed) {
             if (err) res.send(err);

@@ -65,7 +65,7 @@ function getMenus(req, res) {
             }
         });
     } else {
-        res.status(400).send({error: 'You must specify an id'});
+        res.status(400).send({message: 'You must specify an id'});
     }
 }
 
@@ -78,7 +78,7 @@ function updateOrder(req, res) {
                 res.json(order);
         });
     } else {
-        res.status(400).send({error: 'You must specify an id'});
+        res.status(400).send({message: 'You must specify an id'});
     }
 }
 
