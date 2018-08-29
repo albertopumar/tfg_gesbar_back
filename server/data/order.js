@@ -35,12 +35,20 @@ var Order = mongoose.Schema({
             }
         }
     ],
+    totalPrice : {
+        type: Number,
+        default: 0
+    },
     establishment: {type: mongoose.Schema.Types.ObjectId, ref: 'establishment'},
     user: {type: mongoose.Schema.Types.ObjectId, ref: 'user'}
 });
 
 Order.pre('save', function (next) {
+    let self = this;
+
     async.map(this.products, function (productItem, next) {
+        self.totalPrice += productItem.price * productItem.quantity;
+
         Product.findOne({_id: productItem.product}, function (err, product) {
                 productItem.price = product.price;
                 productItem.menu = product.menu;

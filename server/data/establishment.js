@@ -7,7 +7,7 @@ var establishmentSchema = mongoose.Schema({
         required: true
     },
     description: String,
-    menus: [{type: mongoose.Schema.Types.ObjectId, ref: 'menu'}]
+    menu: {type: mongoose.Schema.Types.ObjectId, ref: 'menu'}
 });
 
 module.exports = mongoose.model("establishment", establishmentSchema);

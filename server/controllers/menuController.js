@@ -70,6 +70,10 @@ function removeMenu(req, res) {
 
 
 function updateActiveMenu(req, res) {
+    Establishment.findByIdAndUpdate(req.params.establishment_id, {menu: req.params.menu_id}, function (err, establishment) {
+        if (err) res.send(err);
+    });
+
     Menu.update({establishment: req.params.establishment_id}, {availability: false}, {multi: true}, function (err, menus) {
         if (err) res.send(err);
         else {

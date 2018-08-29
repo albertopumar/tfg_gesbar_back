@@ -25,9 +25,9 @@ function getEstablishments(req, res) {
         const limit = 3;
         let query;
         if (req.query.search)
-            query = Establishment.find({name: new RegExp(req.query.search, "i")});
+            query = Establishment.find({name: new RegExp(req.query.search, "i"), menu: { $exists: true } });
         else
-            query = Establishment.find({});
+            query = Establishment.find({menu: { $exists: true}});
 
         query.limit(limit);
         query.skip(req.query.page * limit);
