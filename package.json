@@ -1,38 +1,24 @@
 {
-  "name": "express-react-mongodb",
+  "name": "express-mongodb",
   "version": "1.0.0",
-  "description": "this is a demo application made with react, express, mongodb and nodejs,",
+  "description": "This is a server built in express and mongodb to serve the react app",
   "main": "index.js",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "start": "node server/server.js"
   },
-  "author": "nishant",
-  "license": "ISC",
+  "author": "Alberto Pumar",
   "dependencies": {
-    "Faker": "^0.7.2",
     "async": "^2.6.1",
     "body-parser": "^1.14.2",
-    "browserify": "^12.0.1",
     "cors": "^2.8.4",
     "es6-promise": "^3.0.2",
     "express": "^4.13.3",
-    "guid": "0.0.12",
-    "gulp": "^3.9.1",
-    "jquery": "^2.1.4",
     "mongoose": "^4.3.4",
     "oauth2orize": "^1.11.0",
     "passport": "^0.2.2",
     "passport-http": "^0.3.0",
     "passport-http-bearer": "^1.0.1",
     "passport-oauth2-client-password": "^0.1.2",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
-    "react-scripts": "1.1.1",
-    "reactify": "^1.1.1",
-    "underscore": "^1.8.3",
-    "vinyl-source-stream": "^1.1.0"
+    "underscore": "^1.8.3"
   }
 }

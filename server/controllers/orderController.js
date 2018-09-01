@@ -14,7 +14,7 @@ router.route("/order/:order_id/update").get(updateOrder);
 function getOrders(req, res) {
     // TODO: Check is the owner is the authorized user
     if(req.user.type === 'owner') {
-        Order.find({establishment: {$in: req.user.establishments}, status: req.query.status}, function (err, order) {
+        Order.find({establishment: req.query.establishment, status: req.query.status}, function (err, order) {
             if (err) res.send(err);
             else res.json(order);
         });
@@ -55,7 +55,7 @@ function getMenus(req, res) {
             else {
                 if (!menu) res.json([]);
                 else {
-                    Product.find({menu: menu._id}, function (err, items) {
+                    Product.find({menu: menu._id, availability: true}, function (err, items) {
                         if (err)
                             res.send(err);
                         else
