@@ -71,7 +71,9 @@ function getMenus(req, res) {
 
 function updateOrder(req, res) {
     if(req.user.type === 'owner') {
-        Order.update({_id: req.params.order_id}, {status: req.query.status}, function (err, order) {
+        let deliveryDate;
+        if (req.query.status === 'collected') deliveryDate = new Date();
+        Order.update({_id: req.params.order_id}, {status: req.query.status, deliveryDate: deliveryDate}, function (err, order) {
             if (err)
                 res.send(err);
             else

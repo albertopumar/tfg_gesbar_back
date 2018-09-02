@@ -14,6 +14,9 @@ var Order = mongoose.Schema({
         type: String,
         default: 'pending'
     },
+    deliveryDate: {
+        type: Date
+    },
     products: [
         {
             quantity: {
